@@ -1,0 +1,26 @@
+{
+    "author": "Boubajoker",
+    "incognito": "split",
+    "manifest_version": 2,
+    "name": "YouTubeStatsMaster",
+    "version": "22.08.2023",
+    "homepage_url" : "https://boubajoker.github.io/YouTubeStats/",
+    "browser_action" : {
+        "default_popup" : "./index.html",
+        "default_title" : "Click here to open YouTubeStats"
+    },
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "./options.html"
+    },
+    "permissions": [
+        "tabs"
+    ],
+    "description": "An extension to get some presice stats about the YouTube video that you're watching !",
+    "icons": {
+       "128": "./assets/icon/icon_128.png",
+       "64": "./assets/icon/icon_64.png",
+       "32": "./assets/icon/icon_32.png",
+       "16": "./assets/icon/icon_16.png"
+    }
+}

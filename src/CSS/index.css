@@ -1,0 +1,19 @@
+body {
+    height: 100%;
+    width: 500px;
+    margin: 0;
+}
+
+#main-box {
+    position: relative;
+    background: rgb(255, 255, 255, 0.3);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 15px;
+}
+
+#main-title {
+    font-weight: 400;
+    text-align: center;
+}
