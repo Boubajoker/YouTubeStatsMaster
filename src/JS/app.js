@@ -15,19 +15,15 @@ let credit_text = document.querySelector('.credit-text');
 let credit_link = document.querySelector('.credit-link');
 let backline_1 = document.querySelector('.backline-1');
 let backline_2 = document.querySelector('.backline-2');
+let video_thumbnail_img = document.querySelector('.video-thumbnail');
+let video_title_text = document.querySelector('.video-title');
+let app_container = document.querySelector('.app-container');
+let channel_title_text = document.querySelector('.channel-title');
 
 function setup_error(console_msg, ui_msg) {
     console.error(console_msg);
-    like_img.remove();
-    view_img.remove();
-    like_percent_img.remove();
-    stat_text_1.remove();
-    stat_text_2.remove();
-    stat_text_3.remove();
-    backline_1.remove();
-    backline_2.remove();
-    credit_link.remove();
-    credit_text.remove();
+    app_container.remove();
+
     error_message_text.innerText = ui_msg;
 };
 
@@ -47,9 +43,11 @@ if (localStorage.getItem('dark_theme')) {
     headers1.style.color = 'rgb(255, 255, 255)';
     credit_text.style.color = 'rgb(255, 255, 255)';
     credit_link.style.color = 'rgb(255, 255, 255)';
+    channel_title_text.style.color = 'rgb(255, 255, 255)';
     like_img.src = "./assets/img/like_img_dark.svg";
     view_img.src = "./assets/img/view_img_dark.svg";
     like_percent_img.src = "./assets/img/like_percent_img_dark.svg";
+    video_title_text.style.color = 'rgb(255, 255, 255)';
 };
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -58,9 +56,10 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     if (user_current_url.slice(0, 32) === "https://www.youtube.com/watch?v=" || user_current_url.slice(0, 31) === "https://www.youtube.com/shorts/") {
         let video_ID = user_current_url.slice(id_length, user_current_url.length);
         let api_key = "AIzaSyAjtE-vpXkacQJexdbJ_xj_GmYXLNOk2ao";
-        let api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=statistics`;
+        let statistics_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=statistics`;
+        let thumbnail_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=snippet`;
 
-        fetch(api_url)
+        fetch(statistics_api_url)
         .then(response => response.json())
         .then(data => {
             let statistics = data.items[0].statistics;
@@ -72,6 +71,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             view_count_text.innerHTML = `<span id=\"main-stats\">${views}</span> views.`;
             like_percentage_text.innerHTML = `≈ <span id=\"main-stats\">${like_percentage_equation}%</span> of the people who watched the video liked it.`;
             like_percentage_text.title = `${likes} likes out of ${views} views.`;
+            
         }).catch(err => {
             console.error(err);
             if (localStorage.getItem('shorts_optimized')) {
@@ -80,8 +80,28 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
                 setup_error(`[ERROR]:WRONG_PAGE. (${user_current_url})`,'OOPS.. Something went wrong ! (note: if you want to analyze YouTube Shorts\u2122 go to the extensions options -> right click on extension icon then select \'Options\'.).');
             };
         });
+
+        fetch(thumbnail_api_url)
+        .then(response => response.json())
+        .then(data => {
+            const thumbnail_url = data.items[0].snippet.thumbnails.high.url;
+            const video_title = data.items[0].snippet.title;
+            const channel_title = data.items[0].snippet.channelTitle;
+
+            channel_title_text.innerText = channel_title;
+            video_title_text.innerText = video_title;
+            video_thumbnail_img.src = thumbnail_url;
+        })
+        .catch(err => {
+            setup_error(`[ERROR]:ERROR_FETCH. (${user_current_url}) + ${err}`,'OOPS.. Something went wrong ! We couldn\'t quite catch that !');
+        });
     } else {
         setup_error('[ERROR]:VIDEO_STATS_FETCH_FAILED.', 'OOPS... Something went wrong ! Please make sure that you are connected to internet or that you are on YouTube');
     };
 });
-//24|8 K.B.
+
+fetch(document.location.origin + "/manifest.json")
+.then(response => response.json())
+.then(data => {
+    console.log(`${data.name} v${data.version} by ${data.author}`);
+});
