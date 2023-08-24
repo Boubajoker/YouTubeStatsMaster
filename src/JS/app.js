@@ -19,10 +19,25 @@ let video_thumbnail_img = document.querySelector('.video-thumbnail');
 let video_title_text = document.querySelector('.video-title');
 let app_container = document.querySelector('.app-container');
 let channel_title_text = document.querySelector('.channel-title');
+let publish_date_text = document.querySelector('.publish-date');
 
 function setup_error(console_msg, ui_msg) {
     console.error(console_msg);
     app_container.remove();
+    stat_text_1.remove();
+    stat_text_2.remove();
+    stat_text_3.remove();
+    credit_text.remove();
+    credit_link.remove();
+    channel_title_text.remove();
+    publish_date_text.remove();
+    like_img.remove();
+    view_img.remove();
+    like_percent_img.remove();
+    video_thumbnail_img.remove()
+    video_title_text.remove();
+    backline_1.remove();
+    backline_2.remove();
 
     error_message_text.innerText = ui_msg;
 };
@@ -44,6 +59,7 @@ if (localStorage.getItem('dark_theme')) {
     credit_text.style.color = 'rgb(255, 255, 255)';
     credit_link.style.color = 'rgb(255, 255, 255)';
     channel_title_text.style.color = 'rgb(255, 255, 255)';
+    publish_date_text.style.color = 'rgb(255, 255, 255)';
     like_img.src = "./assets/img/like_img_dark.svg";
     view_img.src = "./assets/img/view_img_dark.svg";
     like_percent_img.src = "./assets/img/like_percent_img_dark.svg";
@@ -55,7 +71,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 
     if (user_current_url.slice(0, 32) === "https://www.youtube.com/watch?v=" || user_current_url.slice(0, 31) === "https://www.youtube.com/shorts/") {
         let video_ID = user_current_url.slice(id_length, user_current_url.length);
-        let api_key = "AIzaSyAjtE-vpXkacQJexdbJ_xj_GmYXLNOk2ao";
+        let api_key = config.API_KEY;
         let statistics_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=statistics`;
         let thumbnail_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=snippet`;
 
@@ -85,18 +101,19 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         .then(response => response.json())
         .then(data => {
             const thumbnail_url = data.items[0].snippet.thumbnails.high.url;
-            const video_title = data.items[0].snippet.title;
+            const video_title = data.items[0].snippet.title.toUpperCase();
             const channel_title = data.items[0].snippet.channelTitle;
-
+            const actual_date = data.items[0].snippet.publishedAt;
+            
+            publish_date_text.innerText = actual_date.slice(0, 10);
             channel_title_text.innerText = channel_title;
             video_title_text.innerText = video_title;
             video_thumbnail_img.src = thumbnail_url;
-        })
-        .catch(err => {
+        }).catch(err => {
             setup_error(`[ERROR]:ERROR_FETCH. (${user_current_url}) + ${err}`,'OOPS.. Something went wrong ! We couldn\'t quite catch that !');
         });
     } else {
-        setup_error('[ERROR]:VIDEO_STATS_FETCH_FAILED.', 'OOPS... Something went wrong ! Please make sure that you are connected to internet or that you are on YouTube');
+        setup_error('[ERROR]:VIDEO_STATS_FETCH_FAILED.', 'OOPS... Something went wrong ! Please make sure that you are playing a YouTube video/short.');
     };
 });
 

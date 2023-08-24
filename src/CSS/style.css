@@ -44,18 +44,25 @@ img {
 
 #video-thumbnail {
     width: 100%;
-    height: 362px;
+    height: 360px;
     background-color: rgb(255, 255, 255);
+    border-radius: 20px;
 }
 
 #video-title {
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     margin: 0;
 }
 
 #channel-title {
     text-align: center;
     margin: 0;
-    font-size: 15px;
+    font-size: 12px;
+}
+
+#publish-date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -3,7 +3,7 @@
     "incognito": "split",
     "manifest_version": 2,
     "name": "YouTubeStatsMaster",
-    "version": "23.08.2023",
+    "version": "24.08.2023",
     "homepage_url" : "https://boubajoker.github.io/YouTubeStats/",
     "browser_action" : {
         "default_popup" : "./index.html",
