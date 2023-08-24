@@ -21,6 +21,6 @@
         - Added Features :rocket::
             - Now the publish date will be displayed on the main page ! :framed_picture:
         - Fixed Bugs :bug::gun::
-            - Fixed lots of bugs :bug::gun !
+            - Fixed lots of bugs :bug::gun: !
             - Performances improved :rocket::muscle: !
 }
