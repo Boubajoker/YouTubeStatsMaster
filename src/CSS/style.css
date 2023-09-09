@@ -47,6 +47,7 @@ img {
     height: 360px;
     background-color: rgb(255, 255, 255);
     border-radius: 20px;
+    animation: fade-in 0.7s ease-in;
 }
 
 #video-title {

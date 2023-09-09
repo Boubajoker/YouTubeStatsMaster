@@ -13,8 +13,6 @@ let id_length = 0;
 let actual_mod_text = document.querySelector('.actual-mod');
 let credit_text = document.querySelector('.credit-text');
 let credit_link = document.querySelector('.credit-link');
-let backline_1 = document.querySelector('.backline-1');
-let backline_2 = document.querySelector('.backline-2');
 let video_thumbnail_img = document.querySelector('.video-thumbnail');
 let video_title_text = document.querySelector('.video-title');
 let app_container = document.querySelector('.app-container');
@@ -24,30 +22,19 @@ let publish_date_text = document.querySelector('.publish-date');
 function setup_error(console_msg, ui_msg) {
     console.error(console_msg);
     app_container.remove();
-    stat_text_1.remove();
-    stat_text_2.remove();
-    stat_text_3.remove();
-    credit_text.remove();
     credit_link.remove();
-    channel_title_text.remove();
-    publish_date_text.remove();
-    like_img.remove();
-    view_img.remove();
-    like_percent_img.remove();
-    video_thumbnail_img.remove()
-    video_title_text.remove();
-    backline_1.remove();
-    backline_2.remove();
-
+    credit_text.remove();
     error_message_text.innerText = ui_msg;
 };
 
 if (localStorage.getItem('shorts_optimized')) {
     actual_mod_text.innerText = "YouTube Shorts\u2122";
     id_length = 31;
+    console.log('%c[INFO]: video type set to: YT_SHORTS', 'background-color: rgb(0, 0, 155); font-size: 15px;');
 } else {
     actual_mod_text.innerText = "YouTube\u2122 long videos";
     id_length = 32;
+    console.log('%c[INFO]: video type set to: YT_LONG_VIDEOS', 'background-color: rgb(0, 0, 155); font-size: 15px;');
 };
 
 if (localStorage.getItem('dark_theme')) {
@@ -64,6 +51,9 @@ if (localStorage.getItem('dark_theme')) {
     view_img.src = "./assets/img/view_img_dark.svg";
     like_percent_img.src = "./assets/img/like_percent_img_dark.svg";
     video_title_text.style.color = 'rgb(255, 255, 255)';
+    console.log('%c[INFO]: theme type set to: DARK', 'background-color: rgb(0, 0, 155); font-size: 15px;');
+} else {
+    console.log('%c[INFO]: theme type set to: LIGHT', 'background-color: rgb(0, 0, 155); font-size: 15px;');
 };
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
@@ -83,6 +73,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             let views = statistics.viewCount;
             let like_percentage_equation = Math.round((likes * 100 / views) * 100)/100;
 
+            console.log(`%c[INFO]: succsess fetching video statistics`, 'color: rgb(0, 0, 255,); background: rgb(0, 0, 155)')
+            
             like_count_text.innerHTML = `<span id=\"main-stats\">${likes}</span> likes.`;
             view_count_text.innerHTML = `<span id=\"main-stats\">${views}</span> views.`;
             like_percentage_text.innerHTML = `≈ <span id=\"main-stats\">${like_percentage_equation}%</span> of the people who watched the video liked it.`;
@@ -103,9 +95,9 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             const thumbnail_url = data.items[0].snippet.thumbnails.high.url;
             const video_title = data.items[0].snippet.title.toUpperCase();
             const channel_title = data.items[0].snippet.channelTitle;
-            const actual_date = data.items[0].snippet.publishedAt;
+            const publish_date = data.items[0].snippet.publishedAt;
             
-            publish_date_text.innerText = actual_date.slice(0, 10);
+            publish_date_text.innerText = publish_date.slice(0, 10);
             channel_title_text.innerText = channel_title;
             video_title_text.innerText = video_title;
             video_thumbnail_img.src = thumbnail_url;
@@ -117,7 +109,7 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     };
 });
 
-fetch(document.location.origin + "/manifest.json")
+fetch("./manifest.json")
 .then(response => response.json())
 .then(data => {
     console.log(`${data.name} v${data.version} by ${data.author}`);

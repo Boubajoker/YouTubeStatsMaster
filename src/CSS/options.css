@@ -27,3 +27,11 @@ h2 {
 span {
     font-size: 15px;
 }
+
+.about-section {
+    text-align: center;
+}
+
+#about-project-text {
+    margin-bottom: 10px;
+}

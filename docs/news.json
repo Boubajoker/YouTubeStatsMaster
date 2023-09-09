@@ -1,0 +1,11 @@
+{
+    "news_title" : "Verison '004.05.09.2023' is now here !",
+    "news_paragraph" : "This version is the first ever public realese of YouTubeStatsMaster. Warning, This extension is in early alpha, there might be some bugs or issues !",
+    "news_video" : {
+        "activate" : false,
+        "src" : null,
+        "autoplay" : null,
+        "loop" : null
+    },
+    "news_img" : null
+}
