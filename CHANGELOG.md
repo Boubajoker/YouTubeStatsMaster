@@ -34,3 +34,12 @@
             - Fixed lots of bugs :bug::gun: !
             - Performances improved :rocket::muscle: !
 }
+
+- v005.23.09.2023 Alpha A-1 {master} [PUBLIC REALESE] {
+        - YouTubeStatsMaster version 005.23.09.2023 changelog:
+            - Added Features :rocket::
+                - Added dislikes statistics :-1: !
+            - Fixed Bugs :bug::gun::
+                - Fixed lots of bugs :bug::gun: !
+                - Performances improved :rocket::muscle: !
+}

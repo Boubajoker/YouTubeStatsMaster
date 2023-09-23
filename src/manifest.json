@@ -3,7 +3,7 @@
     "incognito": "split",
     "manifest_version": 2,
     "name": "YouTubeStatsMaster",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "homepage_url" : "https://boubajoker.github.io/YouTubeStats/",
     "description": "An extension to get some presice stats about the YouTube video that you're watching !",
     "browser_action" : {

@@ -18,6 +18,12 @@ let video_title_text = document.querySelector('.video-title');
 let app_container = document.querySelector('.app-container');
 let channel_title_text = document.querySelector('.channel-title');
 let publish_date_text = document.querySelector('.publish-date');
+let dislike_img = document.querySelector('.dislike-img');
+let dislike_count_text = document.querySelector('.dislike-count-text');
+let dislike_percent_img = document.querySelector('.dislike-percent-img');
+let dislike_percentage_text = document.querySelector('.dislike-percentage-text');
+let yt_dislikes_credit_text = document.querySelector('.yt-dislikes-credit-text');
+let yt_dislikes_credits_link = document.querySelector('.yt-dislikes-credits-link');
 
 function setup_error(console_msg, ui_msg) {
     console.error(console_msg);
@@ -47,8 +53,14 @@ if (localStorage.getItem('dark_theme')) {
     credit_link.style.color = 'rgb(255, 255, 255)';
     channel_title_text.style.color = 'rgb(255, 255, 255)';
     publish_date_text.style.color = 'rgb(255, 255, 255)';
+    dislike_count_text.style.color = 'rgb(255, 255, 255)';
+    yt_dislikes_credit_text.style.color = 'rgb(255, 255, 255)';
+    dislike_percent_img.src = "./assets/img/dislike_percent_img_dark.svg";
+    yt_dislikes_credits_link.style.color = "rgb(255, 255, 255)";
+    dislike_percentage_text.style.color = "rgb(255, 255, 255)";
     like_img.src = "./assets/img/like_img_dark.svg";
     view_img.src = "./assets/img/view_img_dark.svg";
+    dislike_img.src = "./assets/img/dislike_img_dark.svg";
     like_percent_img.src = "./assets/img/like_percent_img_dark.svg";
     video_title_text.style.color = 'rgb(255, 255, 255)';
     console.log('%c[INFO]: theme type set to: DARK', 'background-color: rgb(0, 0, 155); font-size: 15px;');
@@ -64,6 +76,8 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         let api_key = config.API_KEY;
         let statistics_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=statistics`;
         let thumbnail_api_url = `https://www.googleapis.com/youtube/v3/videos?id=${video_ID}&key=${api_key}&part=snippet`;
+        let dislike_api_url = `https://returnyoutubedislikeapi.com/votes?videoId=${video_ID}`;
+        let dislikes_response = fetch(dislike_api_url);
 
         fetch(statistics_api_url)
         .then(response => response.json())
@@ -79,7 +93,10 @@ chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             view_count_text.innerHTML = `<span id=\"main-stats\">${views}</span> views.`;
             like_percentage_text.innerHTML = `≈ <span id=\"main-stats\">${like_percentage_equation}%</span> of the people who watched the video liked it.`;
             like_percentage_text.title = `${likes} likes out of ${views} views.`;
-            
+            dislikes_response.then(response => response.json()).then(data => {
+                dislike_count_text.innerHTML = `<span id=\"main-stats\">${data.dislikes}</span> estimated dislikes.`;
+                dislike_percentage_text.innerHTML = `≈ <span id=\"main-stats\">${Math.round((data.dislikes * 100 / views)* 100)/100}%</span> of the people who watched the video disliked it.`;
+            });
         }).catch(err => {
             console.error(err);
             if (localStorage.getItem('shorts_optimized')) {

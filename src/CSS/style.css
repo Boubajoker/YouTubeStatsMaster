@@ -10,6 +10,15 @@
     text-align: center;
     font-size: 19px;
 }
+#statistics-text-4 {
+    text-align: center;
+    font-size: 19px;
+}
+
+#statistics-text-5 {
+    text-align: center;
+    font-size: 19px;
+}
 
 #error-box {
     background: rgb(255, 0, 0);
